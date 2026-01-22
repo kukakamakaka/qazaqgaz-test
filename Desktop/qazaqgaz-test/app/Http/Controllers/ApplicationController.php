@@ -40,30 +40,25 @@ class ApplicationController extends Controller
      * Реализует логику обработки заявок из пункта 3 ТЗ.
      */
     public function store(Request $request)
-    {
-        // Валидация данных (хороший тон для ТЗ)
-        $request->validate([
-            'subject' => 'required|string|max:255',
-            'message' => 'required|string',
-            'category' => 'nullable|string',
-            'priority' => 'nullable|string',
-            'deadline' => 'nullable|date',
-        ]);
+{
+    $request->validate([
+        'subject' => 'required|string|max:255',
+        'message' => 'required|string',
+    ]);
 
-        // Создаем запись, принудительно подставляя данные текущего юзера
-        Application::create([
-            'full_name' => Auth::user()->name,
-            'email'     => Auth::user()->email,
-            'subject'   => $request->subject,
-            'category'  => $request->category,
-            'priority'  => $request->priority,
-            'deadline'  => $request->deadline,
-            'message'   => $request->message,
-            'status'    => 'new', // Начальный статус по умолчанию
-        ]);
+    \App\Models\Application::create([
+        'full_name' => auth()->user()->name,
+        'email'     => auth()->user()->email,
+        'subject'   => $request->subject,
+        'category'  => $request->category,
+        'priority'  => $request->priority,
+        'message'   => $request->message,
+        'status'    => 'new',
+        'phone'     => null, // Теперь база разрешит сохранить null
+    ]);
 
-        return redirect()->route('dashboard')->with('success', 'Заявка успешно создана!');
-    }
+    return redirect()->route('dashboard')->with('success', 'Заявка создана!');
+}
 
     /**
      * Смена статуса заявки (для Админ-панели)

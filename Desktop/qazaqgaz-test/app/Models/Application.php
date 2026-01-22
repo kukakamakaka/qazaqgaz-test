@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Application extends Model
 {
-    //
-    protected $fillable = ['full_name', 'email', 'phone', 'message'];
+    protected $fillable = [
+        'full_name', 'email', 'subject', 'category', 'priority', 'message', 'status', 'deadline'
+    ];
 }
